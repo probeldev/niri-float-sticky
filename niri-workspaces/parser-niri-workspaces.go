@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/probeldev/niri-float-sticky/niri-float-sticky/bash"
+	"github.com/probeldev/niri-float-sticky/bash"
 )
 
 // GetCurrentWorkspace возвращает ID текущего workspace (отмеченного *)

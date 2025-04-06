@@ -3,7 +3,7 @@ package niriwindows
 import (
 	"fmt"
 
-	"github.com/probeldev/niri-float-sticky/niri-float-sticky/bash"
+	"github.com/probeldev/niri-float-sticky/bash"
 )
 
 // MoveWindowToWorkspace перемещает окно на указанный workspace

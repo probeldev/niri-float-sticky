@@ -4,8 +4,8 @@ import (
 	"log"
 	"time"
 
-	niriwindows "github.com/probeldev/niri-float-sticky/niri-float-sticky/niri-windows"
-	niriworkspaces "github.com/probeldev/niri-float-sticky/niri-float-sticky/niri-workspaces"
+	niriwindows "github.com/probeldev/niri-float-sticky/niri-windows"
+	niriworkspaces "github.com/probeldev/niri-float-sticky/niri-workspaces"
 )
 
 func main() {

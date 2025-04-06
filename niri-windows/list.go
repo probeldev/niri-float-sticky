@@ -1,7 +1,7 @@
 package niriwindows
 
 import (
-	"github.com/probeldev/niri-float-sticky/niri-float-sticky/bash"
+	"github.com/probeldev/niri-float-sticky/bash"
 )
 
 func GetWindowsList() ([]Window, error) {
