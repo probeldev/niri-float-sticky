@@ -7,6 +7,7 @@ Utility for automatically converting floating windows to tiled mode in [niri](ht
 ### Via Go:
 ```bash
 go install github.com/probeldev/niri-float-sticky@latest
+```
 
 
 ## Usage
@@ -15,6 +16,7 @@ To automatically launch the utility on niri startup, add this line to your niri 
 
 ```kdl
 spawn-at-startup "niri-floating-fixer"
+```
 
 
 ## Contributing
