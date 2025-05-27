@@ -1,6 +1,6 @@
 # Niri Float Sticky
 
-Utility for automatically converting floating windows to tiled mode in [niri](https://github.com/YaLTeR/niri) (Wayland compositor)
+This utility is designed to automatically move floating windows to the active workspace in the [niri](https://github.com/YaLTeR/niri) Wayland compositor.  
 
 ## Installation
 
