@@ -1,6 +1,8 @@
-# Niri Float Sticky
+# Niri Sticky Float  
+*A utility to make floating windows visible across all workspaces in [niri](https://github.com/YaLTeR/niri) — similar to "sticky windows" in other compositors.*  
 
-This utility is designed to automatically move floating windows to the active workspace in the [niri](https://github.com/YaLTeR/niri) Wayland compositor.  
+## Why?  
+Niri doesn’t natively support global floating windows. This tool forces float windows to persist on every workspace, mimicking the `sticky` behavior from X11/Wayland compositors like Sway or KWin.  
 
 ## Installation
 
