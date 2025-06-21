@@ -6,6 +6,9 @@ import (
 
 func GetWindowsList() ([]Window, error) {
 	input, err := bash.RunCommand("niri msg windows")
+	if err != nil {
+		return nil, err
+	}
 
 	windows, err := ParseWindows(input)
 

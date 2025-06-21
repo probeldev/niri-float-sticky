@@ -1,4 +1,4 @@
-# Niri Sticky Float  
+# Niri Float Sticky  
 *A utility to make floating windows visible across all workspaces in [niri](https://github.com/YaLTeR/niri) — similar to "sticky windows" in other compositors.*  
 
 ## Why?  
