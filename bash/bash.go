@@ -1,12 +1,14 @@
+// Package bash
 package bash
 
 import (
 	"bufio"
 	"bytes"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io"
 	"os/exec"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func RunCommand(command string) ([]byte, error) {

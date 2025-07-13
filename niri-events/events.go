@@ -1,3 +1,4 @@
+// Package nirievents
 package nirievents
 
 import (

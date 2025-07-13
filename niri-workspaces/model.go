@@ -1,3 +1,4 @@
+// Package niriworkspaces
 package niriworkspaces
 
 type Workspace struct {
