@@ -1,18 +1,15 @@
 package niriworkspaces
 
 import (
+	"encoding/json"
 	"fmt"
-	"regexp"
-	"strconv"
-	"strings"
-
 	"github.com/probeldev/niri-float-sticky/bash"
 )
 
 // GetCurrentWorkspace возвращает ID текущего workspace (отмеченного *)
-func GetCurrentWorkspace() (int, error) {
+func GetCurrentWorkspace() (uint8, error) {
 	// Выполняем команду и получаем вывод
-	output, err := bash.RunCommand("niri msg workspaces")
+	output, err := bash.RunCommand("niri msg --json workspaces")
 	if err != nil {
 		return 0, fmt.Errorf("failed to get workspaces: %v", err)
 	}
@@ -22,20 +19,15 @@ func GetCurrentWorkspace() (int, error) {
 }
 
 // parseCurrentWorkspace парсит вывод команды и находит текущий workspace
-func parseCurrentWorkspace(output string) (int, error) {
-	lines := strings.Split(output, "\n")
-	re := regexp.MustCompile(`\*\s*(\d+)`)
-
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		if matches := re.FindStringSubmatch(line); matches != nil {
-			workspaceID, err := strconv.Atoi(matches[1])
-			if err != nil {
-				return 0, fmt.Errorf("invalid workspace ID: %v", err)
-			}
-			return workspaceID, nil
+func parseCurrentWorkspace(output []byte) (uint8, error) {
+	var workspaces []Workspace
+	if err := json.Unmarshal(output, &workspaces); err != nil {
+		return 0, fmt.Errorf("error unmarshalling workspaces: %w", err)
+	}
+	for _, w := range workspaces {
+		if w.IsFocused {
+			return w.WorkspaceOnMonitorID, nil
 		}
 	}
-
 	return 0, fmt.Errorf("current workspace not found")
 }

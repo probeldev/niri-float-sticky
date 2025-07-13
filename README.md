@@ -17,7 +17,7 @@ go install github.com/probeldev/niri-float-sticky@latest
 To automatically launch the utility on niri startup, add this line to your niri configuration:
 
 ```kdl
-spawn-at-startup "niri-floating-fixer"
+spawn-at-startup "niri-float-sticky"
 ```
 
 

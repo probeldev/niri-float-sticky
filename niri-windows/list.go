@@ -5,23 +5,23 @@ import (
 )
 
 func GetWindowsList() ([]Window, error) {
-	input, err := bash.RunCommand("niri msg windows")
+	output, err := bash.RunCommand("niri msg --json windows")
 	if err != nil {
 		return nil, err
 	}
 
-	windows, err := ParseWindows(input)
+	windows, err := ParseWindows(output)
 
 	return windows, err
 }
 
-func GetFloatWinwods() ([]Window, error) {
-	response := []Window{}
-
+func GetFloatWindows() ([]Window, error) {
 	windows, err := GetWindowsList()
 	if err != nil {
-		return response, err
+		return nil, err
 	}
+
+	response := make([]Window, 0, len(windows))
 
 	for _, w := range windows {
 		if w.IsFloating {
