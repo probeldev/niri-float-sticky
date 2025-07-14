@@ -8,8 +8,9 @@ import (
 )
 
 func main() {
-	var debug bool
+	var debug, allowForeignMonitors bool
 	flag.BoolVar(&debug, "debug", false, "enable debug logging")
+	flag.BoolVar(&allowForeignMonitors, "allow-moving-to-foreign-monitors", false, "allow moving to foreign monitors")
 	flag.Parse()
 
 	if debug {
@@ -31,7 +32,7 @@ func main() {
 		case *nirievents.WorkspaceActivatedEvent:
 			log.Debugf("Workspace activated: %v", e)
 			for windowID := range floatingWindows {
-				if windowsMonitorMap[windowID] != workspacesMonitorMap[e.Event.WorkspaceID] {
+				if !allowForeignMonitors && windowsMonitorMap[windowID] != workspacesMonitorMap[e.Event.WorkspaceID] {
 					log.Warnf("Ignore moving window %d to foreign monitor %s", windowID, workspacesMonitorMap[e.Event.WorkspaceID])
 					continue
 				}
@@ -50,7 +51,7 @@ func main() {
 		case *nirievents.WindowsChangedEvent:
 			log.Debugf("Windows changed: %v", e)
 			floatingWindows = make(map[uint64]struct{})
-			workspacesMonitorMap = make(map[uint64]string)
+			windowsMonitorMap = make(map[uint64]string)
 			for _, window := range e.Event.Windows {
 				if window.IsFloating && window.WorkspaceID != nil {
 					floatingWindows[window.WindowID] = struct{}{}
