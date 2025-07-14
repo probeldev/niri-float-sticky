@@ -28,6 +28,8 @@ func GetEventStream() (<-chan any, error) {
 			switch {
 			case bytes.Equal(events, []byte("\"WorkspaceActivated\"")):
 				event = &WorkspaceActivatedEvent{}
+			case bytes.Equal(events, []byte("\"WorkspacesChanged\"")):
+				event = &WorkspacesChangedEvent{}
 			case bytes.Equal(events, []byte("\"WindowsChanged\"")):
 				event = &WindowsChangedEvent{}
 			case bytes.Equal(events, []byte("\"WindowClosed\"")):
