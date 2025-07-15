@@ -4,22 +4,20 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/probeldev/niri-float-sticky/bash"
+	nirisocket "github.com/probeldev/niri-float-sticky/niri-socket"
 	log "github.com/sirupsen/logrus"
 )
 
 func GetEventStream() (<-chan any, error) {
-	linesCh, err := bash.RunAndListenCommand("niri msg --json event-stream")
-	if err != nil {
-		return nil, fmt.Errorf("error getting event-stream: %w", err)
-	}
-
 	eventStreamCh := make(chan any)
+	socket := nirisocket.GetSocket()
 
 	go func() {
+		defer nirisocket.ReleaseSocket(socket)
+		defer socket.Close()
 		defer close(eventStreamCh)
 
-		for line := range linesCh {
+		for line := range socket.RecvStream() {
 			if len(line) < 2 {
 				continue
 			}
@@ -28,6 +26,8 @@ func GetEventStream() (<-chan any, error) {
 			switch {
 			case bytes.Equal(events, []byte("\"WorkspaceActivated\"")):
 				event = &WorkspaceActivatedEvent{}
+			case bytes.Equal(events, []byte("\"WorkspacesChanged\"")):
+				event = &WorkspacesChangedEvent{}
 			case bytes.Equal(events, []byte("\"WindowsChanged\"")):
 				event = &WindowsChangedEvent{}
 			case bytes.Equal(events, []byte("\"WindowClosed\"")):
@@ -37,13 +37,17 @@ func GetEventStream() (<-chan any, error) {
 			default:
 				continue
 			}
-			if err = json.Unmarshal(line, &event); err != nil {
+			if err := json.Unmarshal(line, &event); err != nil {
 				log.Errorf("error unmarshalling event: %v", err)
 				continue
 			}
 			eventStreamCh <- event
 		}
 	}()
+
+	if err := socket.SendRequest("\"EventStream\""); err != nil {
+		return nil, fmt.Errorf("error during request event-stream: %w", err)
+	}
 
 	return eventStreamCh, nil
 }
