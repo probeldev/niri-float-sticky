@@ -11,6 +11,10 @@ Niri doesn’t natively support global floating windows. This tool forces float 
 go install github.com/probeldev/niri-float-sticky@latest
 ```
 
+### Via Nix:
+```bash
+nix profile install github:probeldev/niri-float-sticky 
+```
 
 ## Usage
 
