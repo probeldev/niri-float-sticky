@@ -2,14 +2,16 @@ name: Update Version
 on:
   push:
     tags:
-      - 'v*' 
+      - 'v*'
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0
+
       - name: Get Git tag
         id: tag
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
@@ -20,10 +22,13 @@ jobs:
           echo "" >> version.go
           echo "const version = \"$TAG\"" >> version.go
 
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          
+          git checkout -b temp-action-branch
           git add version.go
           git commit -m "chore: update version to $TAG [skip ci]"
-          git push
+          
+          git push origin temp-action-branch:main
