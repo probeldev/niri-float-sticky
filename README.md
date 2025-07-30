@@ -29,6 +29,22 @@ To automatically launch the utility on niri startup, add this line to your niri 
 spawn-at-startup "niri-float-sticky"
 ```
 
+### Command Line Options
+
+```bash
+Usage of niri-float-sticky:
+  -allow-moving-to-foreign-monitors
+        allow moving to foreign monitors
+  -debug
+        enable debug logging
+  -version
+        print version and exit
+```
+
+Example with debug log:
+```bash
+niri-float-sticky -debug | tee /tmp/niri-float-sticky.log
+```
 
 ## Contributing
 
