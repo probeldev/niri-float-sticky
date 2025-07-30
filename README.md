@@ -74,11 +74,6 @@ We welcome all contributions! To get started:
    - New functionality
    - Documentation improvements
 
-Adding pre-commit hooks:
-```bash
-git config core.hooksPath ./git-hooks
-chmod +x ./git-hooks/pre-commit
-```
 
 ## License
 

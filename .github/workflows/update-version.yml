@@ -27,6 +27,8 @@ jobs:
       - name: Update version.go
         run: |
           cat << EOF > version.go
+          // Code generated automatically by GitHub Actions. DO NOT EDIT.
+          // This file will be overwritten on each commit.
           package main
           
           const version = "$VERSION"
