@@ -1,0 +1,41 @@
+name: Update Version
+on:
+  push:
+    branches: [ main ]  # Триггер на пуш в основную ветку
+    paths-ignore:       # Игнорируем сам файл version.go
+      - 'version.go'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Даём права на запись
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Полная история для работы с тегами
+
+      - name: Get version
+        run: |
+          if git describe --tags --abbrev=0 &>/dev/null; then
+            echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+          else
+            echo "VERSION=dev-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          fi
+
+      - name: Update version.go
+        run: |
+          cat << EOF > version.go
+          package main
+          
+          const version = "$VERSION"
+          EOF
+
+      - name: Commit and push
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add version.go
+          git commit -m "chore: auto-update version to $VERSION [skip ci]"
+          git push
