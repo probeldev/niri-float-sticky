@@ -43,7 +43,21 @@ Usage of niri-float-sticky:
 
 Example with debug log:
 ```bash
-niri-float-sticky -debug | tee /tmp/niri-float-sticky.log
+niri-float-sticky -debug >> /tmp/niri-float-sticky.log
+
+# Configuring logrotate
+cat <<EOF | sudo tee /etc/logrotate.d/niri-float-sticky >/dev/null
+/tmp/niri-float-sticky.log {
+    daily
+    rotate 5
+    compress
+    missingok
+    notifempty
+    copytruncate
+    maxsize 10M
+    su root root
+}
+EOF
 ```
 
 ## Contributing
@@ -60,6 +74,11 @@ We welcome all contributions! To get started:
    - New functionality
    - Documentation improvements
 
+Adding pre-commit hooks:
+```bash
+git config core.hooksPath ./git-hooks
+chmod +x ./git-hooks/pre-commit
+```
 
 ## License
 
