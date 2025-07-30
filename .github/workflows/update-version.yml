@@ -8,8 +8,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      tags: write
+      contents: write  # Это включает права на запись тегов
 
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +38,9 @@ jobs:
           git config --global user.email "actions@github.com"
           git add version.go
           git commit -m "chore: update version to $VERSION [skip ci]"
+          
+          # Push changes to the branch first
+          git push origin HEAD:${GITHUB_REF_NAME}
           
           # Delete old tag and create new one
           git tag -d $TAG_VERSION || true
