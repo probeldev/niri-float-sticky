@@ -12,7 +12,7 @@ go install github.com/probeldev/niri-float-sticky@latest
 ```
 
 ### Via [AUR](https://aur.archlinux.org/packages/niri-float-sticky) (maintained by [jamlotrasoiaf](https://github.com/jamlotrasoiaf)/[brainworms2002](https://aur.archlinux.org/account/brainworms2002)):
-```
+```bash
 paru -S niri-float-sticky
 ```
 
