@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/probeldev/niri-float-sticky/bash"
 	"os"
 
 	nirievents "github.com/probeldev/niri-float-sticky/niri-events"
@@ -12,15 +11,14 @@ import (
 )
 
 func main() {
-	var debug, version, allowForeignMonitors bool
+	var debug, showVersion, allowForeignMonitors bool
 	flag.BoolVar(&debug, "debug", false, "enable debug logging")
-	flag.BoolVar(&version, "version", false, "print version and exit")
+	flag.BoolVar(&showVersion, "version", false, "print version and exit")
 	flag.BoolVar(&allowForeignMonitors, "allow-moving-to-foreign-monitors", false, "allow moving to foreign monitors")
 	flag.Parse()
 
-	if version {
-		v, _ := bash.RunCommand("git describe --tags --always")
-		fmt.Println(string(v))
+	if showVersion {
+		fmt.Println(version)
 		os.Exit(0)
 	}
 	if debug {
