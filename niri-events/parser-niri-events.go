@@ -21,7 +21,7 @@ func GetEventStream() (<-chan any, error) {
 			if len(line) < 2 {
 				continue
 			}
-			events := line[bytes.IndexByte(line, '{')+1 : bytes.IndexByte(line, ':')]
+			events := line[1:bytes.IndexByte(line, ':')]
 			var event any
 			switch {
 			case bytes.Equal(events, []byte("\"WorkspaceActivated\"")):
