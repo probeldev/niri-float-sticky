@@ -2,6 +2,8 @@
 package niriwindows
 
 import (
+	"fmt"
+
 	"github.com/probeldev/niri-float-sticky/bash"
 )
 
@@ -31,4 +33,17 @@ func GetFloatWindows() ([]Window, error) {
 	}
 
 	return response, nil
+}
+
+func GetFocusedWindow() (Window, error) {
+	windows, err := GetWindowsList()
+	if err != nil {
+		return Window{}, err
+	}
+	for _, w := range windows {
+		if w.IsFocused {
+			return w, nil
+		}
+	}
+	return Window{}, fmt.Errorf("no focused window found")
 }

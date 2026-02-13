@@ -1,12 +1,14 @@
 package nirisocket
 
 import (
-	"bufio"
+	"encoding/json"
 	"fmt"
-	log "github.com/sirupsen/logrus"
+	"io"
 	"net"
 	"os"
 	"sync"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type Socket struct {
@@ -40,15 +42,22 @@ func (s *Socket) RecvStream() <-chan []byte {
 	linesCh := make(chan []byte)
 
 	go func() {
-		defer func() { _ = s.conn.Close() }()
+		defer s.conn.Close()
 		defer close(linesCh)
 
-		scanner := bufio.NewScanner(s.conn)
-		for scanner.Scan() {
-			linesCh <- scanner.Bytes()
-		}
-		if err := scanner.Err(); err != nil {
-			log.Errorf("error scan response from NIRI_SOCKET: %v", err)
+		decoder := json.NewDecoder(s.conn)
+
+		for {
+			var raw json.RawMessage
+			if err := decoder.Decode(&raw); err != nil {
+				if err == io.EOF {
+					return
+				}
+				log.Errorf("error decode response from NIRI_SOCKET: %v", err)
+				return
+			}
+
+			linesCh <- raw
 		}
 	}()
 

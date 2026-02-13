@@ -39,6 +39,10 @@ Usage of niri-float-sticky:
         only move floating windows with app-id matching given patterns
   -debug
         enable debug logging
+  -disable-auto-stick
+        disable auto sticking for all windows
+  -ipc string
+        send IPC command to daemon: set_sticky, unset_sticky, toggle_sticky
   -title value
         only move floating windows with title matching this pattern
   -version
@@ -69,6 +73,68 @@ cat <<EOF | sudo tee /etc/logrotate.d/niri-float-sticky >/dev/null
 }
 EOF
 ```
+
+
+### IPC
+
+`niri-float-sticky` exposes a simple UNIX socket IPC interface to control window stickiness at runtime.
+
+The daemon creates a socket at:
+
+```
+$XDG_RUNTIME_DIR/niri-float-sticky.sock
+```
+
+This allows external commands (for example, keybindings) to toggle stickiness of the currently focused window.
+
+### How It Works
+
+The binary has two modes:
+
+1. **Daemon mode** (default)
+   Runs the event loop and listens for IPC commands.
+
+2. **Client mode** (`-ipc`)
+   Sends a command to the running daemon and exits immediately.
+
+
+### Available IPC Commands
+
+```bash
+niri-float-sticky -ipc set_sticky
+niri-float-sticky -ipc unset_sticky
+niri-float-sticky -ipc toggle_sticky
+```
+
+* `set_sticky` — force window to be sticky
+* `unset_sticky` — remove manual override
+* `toggle_sticky` — toggle sticky state
+
+
+
+### Example: Keybinding in niri
+
+You can bind stickiness toggling to a key:
+
+```
+binds {
+    Mod+G { 
+        spawn "niri-float-sticky" "-ipc" "toggle_sticky"; 
+    }
+}
+```
+
+### Implementation Details
+
+The IPC protocol uses a JSON message over a UNIX domain socket:
+
+```json
+{
+  "action": "toggle_sticky",
+  "window_id": 123456
+}
+```
+
 
 ## Contributing
 
