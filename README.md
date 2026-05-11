@@ -21,6 +21,11 @@ paru -S niri-float-sticky
 nix profile install github:probeldev/niri-float-sticky 
 ```
 
+### Via XBPS - Void Linux (maintained by [Soulful Sailer](https://github.com/Soulful-Sailer)):
+```bash
+xbps-install niri-float-sticky
+```
+
 ## Usage
 
 To automatically launch the utility on niri startup, add this line to your niri configuration:
