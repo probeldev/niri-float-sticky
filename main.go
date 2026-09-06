@@ -104,7 +104,11 @@ func main() {
 
 	for {
 		select {
-		case event := <-events:
+		case event, ok := <-events:
+			if !ok {
+				log.Info("niri event stream closed; shutting down")
+				return
+			}
 			switch e := event.(type) {
 			case *nirievents.WorkspaceActivatedEvent:
 				log.Debugf("Workspace %d activated", e.Event.WorkspaceID)
